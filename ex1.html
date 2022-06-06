@@ -1,0 +1,67 @@
+
+<!-- Create an animation using JavaScript (1 hour)
+        Create a moveLeft animation -->
+
+
+        
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+#container {
+  width: 400px;
+  height: 100px;
+  position: relative;
+  background: rgb(255, 255, 255);
+}
+#animate {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 25px;
+  left: 350px;
+  background-color: red;
+  border-radius: 50%;
+}
+</style>
+
+<body>
+
+<p><button id="anm-btn">Click Me</button></p> 
+
+<div id ="container">
+  <div id ="animate"></div>
+</div>
+
+
+
+<script>
+
+function moveLeft() {
+  let id = null;
+  const elem = document.getElementById("animate");   
+  let pos = 350;
+  clearInterval(id);
+  id = setInterval(frame, 5);
+  function frame() {
+    if (pos == 0) {
+      clearInterval(id);
+    } else {
+      pos--; 
+      elem.style.left = pos + "px"; 
+    }
+  }
+}
+
+const btn=document.getElementById("anm-btn");
+btn.addEventListener("click", moveLeft)
+
+</script>
+
+</body>
+</html>

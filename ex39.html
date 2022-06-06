@@ -1,0 +1,47 @@
+<!-- Create a validation function that will prevent a user from inputting the following strings input a field:  (4 hours)
+1234
+qwert
+asdf
+4 or more consecutive characters on the keyboard -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form name="myForm" onsubmit="return validateForm()" required>
+        Password: <input type="text" name="fname">
+        <input type="submit" value="Submit">
+      </form>
+
+<script>
+    function validateForm() {
+        const x = document.forms["myForm"]["fname"].value;
+        if (checkqwerty(x)) 
+        {
+            alert("Invalid Password. It can't contain 4 consecutive characters on the keyboard.");
+            return false;
+        }
+    }
+
+    function checkqwerty(password) {
+    const qwerty="qwertyuiopasdfghjklzxcvbnm";
+    const num="1234567890";
+    password=password.toLowerCase();
+    for(let i=0; i<password.length-3; i++) {
+        let ss=password.substring(i, i+4);
+        let reg=new RegExp(ss);
+        var testStr=(Number(ss))? num : qwerty;
+        if(reg.test(testStr)) {return true}
+    }
+    return false;
+}
+</script>
+</body>
+</html>

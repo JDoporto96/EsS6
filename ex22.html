@@ -1,0 +1,46 @@
+<!-- Create a page with a button on it. Every time the button is pressed, the color of a <div> element will change. (30 mins). -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #container {
+  width: 400px;
+  height: 100px;
+  position: relative;
+  background: red;
+  border: 3px solid rgb(5, 5, 5);
+}
+</style>
+<body>
+    <p><button id="btn">Click Me</button></p> 
+    <div id="container"></div>
+</body>
+
+
+<script>
+
+function getRandomInt(min,max){
+    min=Math.ceil(min);
+    max=Math.floor(max)
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+function getRandomRGB(){
+    return `rgb(${getRandomInt(0,255)}, ${getRandomInt(0,255)}, ${getRandomInt(0,255)})`
+}
+
+const btn =document.getElementById("btn");
+btn.addEventListener("click",()=>{
+    const div = document.getElementById("container");
+    div.style.backgroundColor = getRandomRGB();
+})
+
+
+</script>
+</html>

@@ -1,0 +1,63 @@
+<!-- // Create a function that will receive an array of ajax calls and a callback as arguments. The function should execute all ajax calls and execute the callback when all are done. 
+// The resulting data of all calls should be the context of the callback function. Example:
+//           (2 hours)
+// var async = { getAll: function ( urlArray, callback){ /* … */ } };
+
+// Usage: async.getAll([axCall1,axCall2], callback);
+// Expected context of callback:
+//    {
+//      1: <result of first function>,
+//      2: <result of second function>
+//    }
+
+
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+ </head>
+ <body>
+<script>
+    
+   
+function callback(a1,a2){
+    console.log(a2);
+    const obj ={
+        1:JSON.parse(a1.response).fruits,
+        2:JSON.parse(a2.response).vegetables
+    }
+
+    console.log(obj);
+}
+
+axCall1 = "./ex28.json";
+axCall2 = "./ex28.json";
+
+var async = { getAll: async function ( urlArray, callback){
+        const a1 = new XMLHttpRequest();
+        a1.open("GET", urlArray[0],true);
+        a1.onload = function(){
+            const a2 = new XMLHttpRequest();
+            a2.open("GET", urlArray[1],true);
+            a2.onload = function(){
+                callback(a1,a2);
+            }
+            a2.send();
+
+        }
+        a1.send();
+    } 
+};
+
+async.getAll([axCall1,axCall2], callback);
+
+
+    
+</script>
+ </body>
+ </html>

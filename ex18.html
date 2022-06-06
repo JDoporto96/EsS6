@@ -1,0 +1,196 @@
+<!-- Create a table to display all the information of multiple candidates (4 hour).
+Assume the information source is a remote server
+Place an #Add link at the top of the table that will allow the user to add a new candidate
+Each row must have an edit/delete option
+Create the ajax methods that handle the GET, POST, DELETE, and PUT operations.
+Assume there is a server to handle these methods.
+
+ -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+ </head>
+ <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 3px solid;
+    }
+    th{
+        text-align: start;
+    }
+      a:hover{
+        color: blue;
+        
+       
+        cursor: pointer;
+    }
+    #inputForm{
+        visibility: hidden;
+    }
+
+ </style>
+ <body>
+     <table id="myTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Phone</th>
+                <th><a id="addB">#Add</a></th>
+            </tr>
+        </thead> 
+        
+        <tbody>
+            <form id="data-form">
+                <tr id="inputForm">
+                    <td><input type="text" name="name" placeholder="Name"></td>
+                    <td><input type="text" name="lastName" placeholder="Last Name"></td>
+                    <td><input type="text" name="phone" placeholder="Phone Number"></td>
+                    <td><input type="submit" value="Submit"> <input type="hidden" name="id"></td>
+                </tr>
+            </form>
+        </tbody>
+        
+
+
+     </table>
+
+     <template id="trTemplate"> 
+        <tr>
+            <td class="name"></td>
+            <td class="lastName"></td>
+            <td class="phone"></td>
+            <td>[<a class="editB">edit</a>/<a class="deleteB">delete</a>]</td>
+        </tr>
+    </template>
+
+     
+ <script>
+
+    const d= document,
+    $addB= d.getElementById("addB"),
+    $table= d.getElementById("myTable"),
+    $form= d.getElementById("data-form"),
+    $template= d.getElementById("trTemplate").content,
+    $fragment= d.createDocumentFragment(),
+    $row=d.getElementById("inputForm");
+
+    const ajax = (options)=>{
+        let{url,method,success,error,data} = options;
+        const xhr = new XMLHttpRequest();
+
+        xhr.addEventListener("readystatechange",e=>{
+            if(xhr.readyState!==4)return;        
+            
+            if(xhr.status>=200 && xhr.status < 300){
+                let json=JSON.parse(xhr.responseText);
+                success(json);
+            }else{
+                let message = xhr.statusText || "Error encountered";
+                error(`Error ${xhr.status}:${message}`);
+            }
+        });
+
+        xhr.open(method || "GET",url);
+        xhr.setRequestHeader("Content-type","application/json;charset=utf-8");
+        xhr.send(JSON.stringify(data));
+    }
+
+    const getAll =()=>{
+        ajax({
+            url:"http://localhost:3000/contacts",
+            success:(res)=>{
+                res.forEach(el => {
+                    $template.querySelector(".name").textContent = el.name;
+                    $template.querySelector(".lastName").textContent = el.lastName;
+                    $template.querySelector(".phone").textContent = el.phone;
+                    $template.querySelector(".editB").dataset.id = el.id;
+                    $template.querySelector(".editB").dataset.name = el.name;
+                    $template.querySelector(".editB").dataset.lastName = el.lastName;
+                    $template.querySelector(".editB").dataset.phone = el.phone;
+                    $template.querySelector(".deleteB").dataset.id = el.id;
+
+                    let $clone = d.importNode($template,true);
+                    $fragment.appendChild($clone);
+                })
+                $table.querySelector("tbody").appendChild($fragment);
+            },
+            error:(err)=>{
+                console.log(err)
+                $table.insertAdjacentHTML("afterend",`<p><b>${err}</b></p>` );
+            },
+            
+        })
+    }
+
+    d.addEventListener("DOMContentLoaded",getAll);
+
+    d.addEventListener("submit",e=>{
+        if(e.target===$form){
+            e.preventDefault();
+
+            if(!e.target.id.value){
+                ajax({
+                    url:"http://localhost:3000/contacts",
+                    method: "POST",
+                    success: (res)=> location.reload(),
+                    error:()=> $form.insertAdjacentHTML("afterend",`<p><b>${err}</b></p>`),
+                    data:{
+                        name: e.target.name.value,
+                        lastName: e.target.lastName.value,
+                        phone: e.target.phone.value
+                    }
+                })
+
+            }else{
+                ajax({
+                    url:`http://localhost:3000/contacts/${e.target.id.value}`,
+                    method: "PUT",
+                    success: (res)=> location.reload(),
+                    error:()=> $form.insertAdjacentHTML("afterend",`<p><b>${err}</b></p>`),
+                    data:{
+                        name: e.target.name.value,
+                        lastName: e.target.lastName.value,
+                        phone: e.target.phone.value
+                    }
+                })
+
+            }
+        }
+    })
+
+    d.addEventListener("click",e=>{
+        if(e.target.matches(".editB")){
+            $row.style.visibility="visible";
+            $form.name.value=e.target.dataset.name;
+            $form.lastName.value=e.target.dataset.lastName;
+            $form.phone.value=e.target.dataset.phone;
+            $form.id.value= e.target.dataset.id;
+
+        }
+        if(e.target.matches(".deleteB")){
+            let isDelete=confirm(`Deleting id:${e.target.dataset.id}. Do you want to continue? `);
+            if(isDelete){
+                ajax({
+                    url:`http://localhost:3000/contacts/${e.target.dataset.id}`,
+                    method: "DELETE",
+                    success: (res)=> location.reload(),
+                    error:()=> alert(err)
+                })                
+            }
+        }
+
+    })
+    $addB.addEventListener("click",()=>{
+        $row.style.visibility="visible";
+    })
+ 
+ </script>    
+ </body>
+ </html>

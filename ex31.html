@@ -1,0 +1,57 @@
+<!-- Modify the previous exercise so that only the clicked <p> is shown. All others should be hidden. (1 hours) -->
+
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Document</title>
+ </head>
+ <style>
+p:nth-child(2n){
+    visibility:hidden;
+}
+p:nth-child(2n-1):hover{
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+ </style>
+ <body>
+    <div>
+
+    
+    <p>Toggle 1</p>
+    <p>I will be hidden or visible 1</p>
+    
+    <p>Toggle 2</p>
+    <p>I will be hidden or visible 2</p>
+    
+    <p>Toggle 3</p>
+    <p>I will be hidden or visible 3</p>
+    
+    <p>Toggle 4</p>
+    <p>I will be hidden or visible 4</p>
+    </div>
+<script>
+    const ps = document.getElementsByTagName("p");
+    window.onload = function(){
+        for(let i = 1; i<ps.length;i+=2){
+            ps[i].style.visibility = "hidden";
+        }
+    }
+    for(let i=0; i<ps.length; i+=2){
+        ps[i].addEventListener("click",e=>{
+            const even =document.querySelectorAll('div :nth-child(even)');
+            even.forEach(el=>el.style.visibility="hidden");
+            let p = e.target.nextElementSibling;
+            p.style.visibility = (p.style.visibility != "hidden")? "hidden":"visible";
+        });
+    }
+   
+</script>
+ </body>
+ </html>
+ 
+    
