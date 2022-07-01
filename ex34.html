@@ -41,20 +41,21 @@ function bounce() {
   const elem = document.getElementById("animate");   
   let pos = 0;
   let i = 0;
-  let v=1;
+  let v=0;
+  let a=.1;
   clearInterval(id);
-  id = setInterval(frame, 5);
+  id = setInterval(frame, 20);
   function frame() {
    if (i<10){
-      pos= pos + v;
-      elem.style.top = pos + "px"; 
-      if (pos == 400) {
-        v= v*-1;
-        i++;
-      }
-      if(pos == i*40){
-        v=v*-1;
-      }  
+    v=v+a;
+    pos= pos + v;
+    elem.style.top = pos + "px"; 
+    if (pos >= 400) {
+    v= v*-1;
+    i++;
+    }else if(pos <= i*40 && i>0){
+    v=v*-1;
+    }  
     }
   }
 };

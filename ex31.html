@@ -41,14 +41,19 @@ p:nth-child(2n-1):hover{
             ps[i].style.visibility = "hidden";
         }
     }
-    for(let i=0; i<ps.length; i+=2){
-        ps[i].addEventListener("click",e=>{
-            const even =document.querySelectorAll('div :nth-child(even)');
-            even.forEach(el=>el.style.visibility="hidden");
+
+    document.addEventListener("click", e=>{
+        if(e.target.matches('p:nth-child(2n-1)')){
             let p = e.target.nextElementSibling;
+            if(p.style.visibility=="hidden"){
+                const even =document.querySelectorAll('div :nth-child(even)');
+                even.forEach(el=>el.style.visibility="hidden");
+            }
             p.style.visibility = (p.style.visibility != "hidden")? "hidden":"visible";
-        });
-    }
+    
+        }
+    })
+           
    
 </script>
  </body>

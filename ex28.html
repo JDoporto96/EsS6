@@ -24,38 +24,30 @@
  <body>
 <script>
     
-   
-function callback(a1,a2){
-    console.log(a2);
-    const obj ={
-        1:JSON.parse(a1.response).fruits,
-        2:JSON.parse(a2.response).vegetables
-    }
 
-    console.log(obj);
-}
+const axCall1 = async()=>{
+    let res = await fetch("./ex28.json")
+    json = await res.json();
+    return json
+}, 
 
-axCall1 = "./ex28.json";
-axCall2 = "./ex28.json";
+axCall2 = async()=>{
+    res = await fetch("./ex28.json"),
+    json = await res.json();
+    return json
+}; 
 
 var async = { getAll: async function ( urlArray, callback){
-        const a1 = new XMLHttpRequest();
-        a1.open("GET", urlArray[0],true);
-        a1.onload = function(){
-            const a2 = new XMLHttpRequest();
-            a2.open("GET", urlArray[1],true);
-            a2.onload = function(){
-                callback(a1,a2);
-            }
-            a2.send();
+    let results={};
+    for(let i = 0; i<urlArray.length;i++){
+        let ax= await urlArray[i]()
+        results[i+1]=await ax;
+    }
+    callback(results);
+}}
 
-        }
-        a1.send();
-    } 
-};
 
-async.getAll([axCall1,axCall2], callback);
-
+async.getAll([axCall1,axCall2], (obj)=>console.log(obj[1]));
 
     
 </script>

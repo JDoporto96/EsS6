@@ -34,25 +34,21 @@
         }
     }
 
-    window.onload = function(){
-        var http = new XMLHttpRequest();
-        http.open("GET", "./ex10.json",true);
-        http.send();
-        http.onreadystatechange=function(){
-            if(http.readyState ==4 && http.status==200){
-                data=(JSON.parse(http.response));
-                let name = data.name,
-                lastName = data.lastName,
-                specialty = data.specialty;
-                const p1 = new Medic(name,lastName,specialty);
-                console.log(p1);
-            }
-        };
-       
-    }
     
-    // const p1= new Medic(data.name, "Doporto", "dentist");
-    // console.log(p1.fullname());
+
+    window.onload = async function(){
+       try{
+        let res = await fetch('./ex10.json?name=Jose&lastName=Doporto'),
+        json = await res.json();
+
+        if(!res.ok) {
+            throw{status: res.status,statusText:res.statusText}
+        }
+       }catch(err){
+        let message = err.statusText || "Error encountered";
+        console.log(err, message)
+       }
+    }
     
 </script>    
 </body>

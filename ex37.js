@@ -9,7 +9,7 @@
 // add(12, 8, 5, 6) == 31
 
 String.prototype.exclamation= function(){
-    return this + "!";
+    return `${this}!`;
 }
 const test1 = ("hello".exclamation() == "hello!");
 console.log(test1);

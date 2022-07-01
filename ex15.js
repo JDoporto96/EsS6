@@ -4,3 +4,30 @@
 // foo.bar();
 // foo.test();
 
+
+var foo = (function () {
+    var publicMethods={};
+
+    var sayHello = function(){
+        console.log('Hello. ')
+    };
+
+    publicMethods.bar = function(){
+        sayHello()
+    };
+
+    publicMethods.test = function(){
+        sayHello()
+    }
+
+    return publicMethods;
+
+})();
+
+
+
+foo.bar();
+foo.test();
+//foo.sayHello();
+
+

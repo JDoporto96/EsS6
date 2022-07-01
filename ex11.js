@@ -10,18 +10,23 @@ const obj1={
 const obj2={
     name: "Ana",
     age: 25,
-    city: "Puebla"
+    city: "Puebla",
+    a: 1
 }
 
 function objCompare(obj1,obj2){
     const difProps=[];
-    for(let prop of Object.keys(obj1)){
-        if(prop in obj2 && obj1[prop]!=obj2[prop]){
+    let mainObj = Object.keys(obj1).length > Object.keys(obj2) ? obj1 : obj2;
+    let secObj = mainObj===obj1? obj2:obj1;
+    for(let prop of Object.keys(mainObj)){
+        if((prop in secObj && mainObj[prop]!=secObj[prop])||!(prop in secObj)){
             difProps.push(prop);
         }
     }
-    return `These properties (${ difProps}) are diferent between the objects`; 
+    return difProps 
 }
 
 console.log(objCompare(obj1,obj2));
+
+
 

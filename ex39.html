@@ -31,11 +31,12 @@ asdf
     }
 
     function checkqwerty(password) {
-    const qwerty="qwertyuiopasdfghjklzxcvbnm";
+    const qwerty="qwertyuiop asdfghjkl zxcvbnm";
     const num="1234567890";
     password=password.toLowerCase();
-    for(let i=0; i<password.length-3; i++) {
-        let ss=password.substring(i, i+4);
+    let newPassword = password.replace(/\s+/g,'');
+    for(let i=0; i<newPassword.length-3; i++) {
+        let ss=newPassword.substring(i, i+4);
         let reg=new RegExp(ss);
         var testStr=(Number(ss))? num : qwerty;
         if(reg.test(testStr)) {return true}

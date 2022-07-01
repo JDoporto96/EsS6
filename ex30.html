@@ -59,12 +59,13 @@ p:nth-child(2n-1):hover{
             ps[i].style.visibility = "hidden";
         }
     }
-    for(let i=0; i<ps.length; i+=2){
-        ps[i].addEventListener("click",e=>{
+
+    document.addEventListener("click", e=>{
+        if(e.target.matches('p:nth-child(2n-1)')){
             let p = e.target.nextElementSibling;
             p.style.visibility = (p.style.visibility != "hidden")? "hidden":"visible";
-        });
-    }
+        }
+    })
    
 </script>
  </body>

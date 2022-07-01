@@ -9,17 +9,13 @@ const months =["January", "February", "March", "April", "May", "June", "July",
 function monthStr(input){
     const arr = input.split(" ");
     let i = 0;
-    let str="";
     while (i< arr.length){
         arr.pop();
         i++;
     };
     arr.push(months[arr.length]);
-    for(let mon of arr.concat(arr)){
-        str+= mon +" "
-    };
-
-   return str
+   
+    return arr.concat(arr).join(' ');
     
 }
 

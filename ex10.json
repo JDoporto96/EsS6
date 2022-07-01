@@ -1,7 +1,11 @@
 {
-    "name": "Jose",
-        
-    "lastName": "Doporto",
-      
-    "specialty": "dentist"
-}
+    "contacts":[
+        {
+            "name": "Jose",
+                
+            "lastName": "Doporto",
+            
+            "specialty": "dentist"
+        }
+    ]
+}    
