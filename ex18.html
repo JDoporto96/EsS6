@@ -81,9 +81,13 @@ Assume there is a server to handle these methods.
     $fragment= d.createDocumentFragment(),
     $row=d.getElementById("inputForm");
 
+    const generateId = ()=>{
+        return Date.now();
+    }
+
     const getAll =async ()=>{
         let res = await fetch("http://localhost:3000/contacts");
-        json = await res.json();
+        let json = await res.json();
         
         json.forEach(el => {
             $template.querySelector(".name").textContent = el.name;
@@ -94,7 +98,7 @@ Assume there is a server to handle these methods.
             $template.querySelector(".editB").dataset.lastName = el.lastName;
             $template.querySelector(".editB").dataset.phone = el.phone;
             $template.querySelector(".deleteB").dataset.id = el.id;
-
+            $template.querySelector("tr").setAttribute("id",`${el.id}`);
             let $clone = d.importNode($template,true);
             $fragment.appendChild($clone);
         })
@@ -102,44 +106,76 @@ Assume there is a server to handle these methods.
     }      
 
     d.addEventListener("DOMContentLoaded",getAll);
+    
 
-    d.addEventListener("submit",async e=>{
+    d.addEventListener("submit", (e)=>{
         if(e.target===$form){
             e.preventDefault();
 
-            if(!e.target.id.value){
-                let options ={
-                    method:"POST",
-                    headers:{
-                        "Content-type":"application/json"
-                    },
-                    body: JSON.stringify({
+            if(e.target.id.value){
+                let data = {
                         name: e.target.name.value,
                         lastName: e.target.lastName.value,
                         phone: e.target.phone.value
-                    })
-                },
-                res = await fetch("http://localhost:3000/contacts",options);
-                json = await res.json();
-                location.reload();
-
-            }else{
+                    };
                 let options ={
                     method:"PUT",
                     headers:{
                         "Content-type":"application/json"
                     },
-                    body: JSON.stringify({
+                    body: JSON.stringify(data)
+                };
+                let res = fetch(`http://localhost:3000/contacts/${e.target.id.value}`,options);
+                
+               
+                let $editingRow = d.getElementById(`${e.target.id.value}`);
+
+                $editingRow.querySelector(".name").textContent = data.name;
+                $editingRow.querySelector(".lastName").textContent = data.lastName;
+                $editingRow.querySelector(".phone").textContent = data.phone;
+                $editingRow.querySelector(".editB").dataset.name = data.name;
+                $editingRow.querySelector(".editB").dataset.lastName = data.lastName;
+                $editingRow.querySelector(".editB").dataset.phone = data.phone;
+
+
+            }else{
+                let id =generateId();
+                let data = {
                         name: e.target.name.value,
                         lastName: e.target.lastName.value,
-                        phone: e.target.phone.value
-                    })
-                },
-                res = await fetch(`http://localhost:3000/contacts/${e.target.id.value}`,options);
-                json = await res.json();
-                location.reload();
-
+                        phone: e.target.phone.value,
+                        id:id
+                    };
+                let options ={
+                    method:"POST",
+                    headers:{
+                        "Content-type":"application/json"
+                    },
+                    body: JSON.stringify(data)
+                };
+                let res = fetch("http://localhost:3000/contacts",options);
+                
+                $template.querySelector(".name").textContent =data.name;
+                $template.querySelector(".lastName").textContent = data.lastName;
+                $template.querySelector(".phone").textContent = data.phone;
+                $template.querySelector(".editB").dataset.id = id;
+                $template.querySelector(".editB").dataset.name = data.name;
+                $template.querySelector(".editB").dataset.lastName = data.lastName;
+                $template.querySelector(".editB").dataset.phone = data.phone;
+                $template.querySelector(".deleteB").dataset.id = id;
+                $template.querySelector("tr").setAttribute("id",`${data.id}`);
+                
+                let $clone = d.importNode($template,true);
+                $fragment.appendChild($clone);
+                $table.querySelector("tbody").appendChild($fragment);
+                
             }
+
+            $row.style.visibility="hidden";
+            $form.name.value="";
+            $form.lastName.value="";
+            $form.phone.value="";
+            $form.id.value= "";
         }
     })
 
@@ -150,8 +186,8 @@ Assume there is a server to handle these methods.
             $form.lastName.value=e.target.dataset.lastName;
             $form.phone.value=e.target.dataset.phone;
             $form.id.value= e.target.dataset.id;
-
         }
+
         if(e.target.matches(".deleteB")){
             let isDelete=confirm(`Deleting id:${e.target.dataset.id}. Do you want to continue? `);
             if(isDelete){
@@ -160,10 +196,17 @@ Assume there is a server to handle these methods.
                     headers:{
                         "Content-type":"application/json"
                     }  
-                },
-                res = await fetch(`http://localhost:3000/contacts/${e.target.dataset.id}`,options);
-                json = await res.json();   
-                location.reload();  
+                };
+                let res = fetch(`http://localhost:3000/contacts/${e.target.dataset.id}`,options);
+                   
+                    let i = e.target.parentNode.parentNode.rowIndex;
+                    $table.deleteRow(i);
+
+
+                    $form.name.value="";
+                    $form.lastName.value="";
+                    $form.phone.value="";
+                    $form.id.value= "";
             }
         }
 

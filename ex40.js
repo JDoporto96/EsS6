@@ -4,7 +4,7 @@
 
 function isSumZero(arr){
     var found = false;
-    let res = [];
+    const res = [];
     for (let i = 0; i < arr.length - 1; i++){
         const s = new Set();
         for (let j = i + 1; j < arr.length; j++){
@@ -13,9 +13,8 @@ function isSumZero(arr){
             {
                 let temp = [x,arr[i],arr[j]];
                 temp = temp.sort();
-                let combination = `(${temp.join(",")})`;
-                if(!res.includes(combination)){
-                    res.push(combination);
+                if(!res.some(el => JSON.stringify(el)== JSON.stringify(temp))){
+                    res.push(temp)
                 }
                 
                 found = true;

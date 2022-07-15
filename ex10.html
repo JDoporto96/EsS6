@@ -34,11 +34,23 @@
         }
     }
 
-    
+    const person1 = Medic('Jose', 'Doporto', 'Dentist')
 
     window.onload = async function(){
        try{
-        let res = await fetch('./ex10.json?name=Jose&lastName=Doporto'),
+        let options ={
+            method:"PUT",
+            headers:{
+                "Content-type":"application/json"
+            },
+            body: JSON.stringify({
+                name: person1.name,
+                lastName: person1.lastName,
+                specialty: person1.specialty
+                        
+            })
+        }
+        res = await fetch('./ex10.json/contacts',options),
         json = await res.json();
 
         if(!res.ok) {

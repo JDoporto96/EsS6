@@ -23,31 +23,33 @@
  </head>
  <body>
 <script>
-    
 
-const axCall1 = async()=>{
-    let res = await fetch("./ex28.json")
-    json = await res.json();
-    return json
-}, 
 
-axCall2 = async()=>{
-    res = await fetch("./ex28.json"),
-    json = await res.json();
-    return json
-}; 
-
-var async = { getAll: async function ( urlArray, callback){
-    let results={};
-    for(let i = 0; i<urlArray.length;i++){
-        let ax= await urlArray[i]()
-        results[i+1]=await ax;
-    }
-    callback(results);
+var async = { getAll: function ( urlArray, callback){
+    let context={};
+    Promise.allSettled(urlArray.map(url => fetch(url)))
+    .then(results => { 
+        results.forEach((result, num) => {
+            if (result.status == "fulfilled") {
+                context[num+1]= result.value;
+            }
+            if (result.status == "rejected") {
+                context[num+1]= result.reason;
+            }
+        });
+    })
+    .finally(()=>{
+        let boundCallback = callback.bind(context);
+        boundCallback();
+    });  
 }}
 
+function print(){
+    console.log(this)
+    
+}
 
-async.getAll([axCall1,axCall2], (obj)=>console.log(obj[1]));
+async.getAll(["./ex28.json","./ex28.json"], print);
 
     
 </script>

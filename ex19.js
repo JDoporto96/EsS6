@@ -1,6 +1,11 @@
 function patternMatch(str, pat){
     let m=0, n=0, match=[];
     while(true){
+
+        if(str.length==0 || pat.length==0){
+            return 'No match'
+        }
+        
         if(str[m]===pat[n] || str[m]==='*' || pat[n]==='*'){
             match.push(str[m])
             m++;
@@ -9,13 +14,21 @@ function patternMatch(str, pat){
                 return match.join('')
             }
         }else{
-            n===0? m++ : n=0;
+            if(n===0){
+                str = str.slice(1,str.length)
+            }else{
+                n=0;
+                str = str.slice(1,str.length)
+                m=0
+            }
+
             match=[]  
         }
 
         if(m==str.length || n==pat.length){
             return 'No match'
         }
+       
     }
 
 }
@@ -26,5 +39,8 @@ str= 'hello', pat= '**'
 console.log(patternMatch(str,pat))
 
 str= 'aca*e', pat= 'act'
+console.log(patternMatch(str,pat))
+
+str= 'aaallo', pat='*al*'
 console.log(patternMatch(str,pat))
 

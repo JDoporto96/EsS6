@@ -35,8 +35,10 @@
 
 
 <script>
+let bouncing = false;
 
 function bounce() {
+  bouncing= true
   let id = null;
   const elem = document.getElementById("animate");   
   let pos = 0;
@@ -45,23 +47,34 @@ function bounce() {
   let a=.1;
   clearInterval(id);
   id = setInterval(frame, 20);
+
   function frame() {
-   if (i<10){
-    v=v+a;
-    pos= pos + v;
-    elem.style.top = pos + "px"; 
-    if (pos >= 400) {
-    v= v*-1;
-    i++;
-    }else if(pos <= i*40 && i>0){
-    v=v*-1;
-    }  
+    if (i<10){
+      v=v+a;
+      pos= pos + v;
+      elem.style.top = pos + "px"; 
+      if (pos >= 400) {
+      v= v*-1;
+      i++;
+      }else if(pos <= i*40 && i>0){
+      v=v*-1;
+      }  
+    }
+
+    if(i>=10){
+      clearInterval(id)
+      bouncing = false
     }
   }
+
+
 };
 
 const btn=document.getElementById("anm-btn");
-btn.addEventListener("click",bounce)
+btn.addEventListener("click",()=>{
+  if(!bouncing){
+    bounce()}
+})
 
 </script>
 

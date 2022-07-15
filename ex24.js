@@ -1,8 +1,8 @@
 // Create a function that will remove specific elements from an array.  (1 hours)
 
 function deleteElement(arr,element){
-    if(arr.includes(element)){
-        const index = arr.indexOf(element);
+    const index = arr.indexOf(element);
+    if(index !== -1){
         arr.splice(index,1);
     }
     

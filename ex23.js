@@ -3,32 +3,28 @@
 
 const{getA,getC}=require('./ex23_utils.js')
 
-function GetRandom(seed, min, max){
-    var self = this;
+function* getRandom(seed, min, max){
     if(!seed){
         seed = Date.now();
     }
 
     var modulus = (max+1 - min);
     var multiplier =getA(modulus);
-    console.log(multiplier);
     var increment =getC(modulus);
-    console.log(increment)
-    
 
-
-    self.nextInt = function(){
+    for(let i=0; i<= (max-min);i++){
         seed = (seed * multiplier + increment) % modulus;
-        return Math.floor((seed/modulus)*(max-min+1)+min)
+        yield Math.floor((seed/modulus)*(max-min+1)+min);
     }
+   
 }
 
 const max = 30, min = 15;
 let arr= [];
 
-var random = new GetRandom(0,min,max);
+var random = getRandom(0,min,max);
 for(let i=min;i<=max;i++){
-    arr.push(random.nextInt())
+    arr.push(random.next().value)
 }
 
 console.log(arr)

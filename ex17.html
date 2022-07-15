@@ -34,10 +34,10 @@
     }
 
     
-    const infoBox = document.getElementById('body').firstElementChild;
-    infoBox.getElementsByTagName('div')[0].insertAdjacentText('afterBegin',candidate.name.firstname);
-    infoBox.getElementsByTagName('div')[1].insertAdjacentText('afterBegin',candidate.printName());
-    
+    const infoBox = document.querySelectorAll('div#body > div.info').item(0);
+    const divs = infoBox.querySelectorAll('div.info > div');
+    divs.item(0).insertAdjacentText('afterBegin',candidate.name.firstname);
+    divs.item(1).insertAdjacentText('afterBegin',candidate.printName());
     
 
 </script> 
