@@ -25,12 +25,13 @@ function isSumZero(arr){
         }
     }
     if (found == false)
-        return( " No set Found" );
+        return null;
     
     return res;
 }
 
-const arr =[3,2,1,0,-3,2,2,-2];
+// const arr =[3,2,1,0,-3,2,2,-2];
+const arr =[3,2,1];
 console.log(isSumZero(arr));
 
 

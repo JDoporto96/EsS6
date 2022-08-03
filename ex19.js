@@ -26,7 +26,7 @@ function patternMatch(str, pat){
         }
 
         if(m==str.length || n==pat.length){
-            return 'No match'
+            return undefined
         }
        
     }

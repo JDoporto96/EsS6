@@ -39,19 +39,13 @@
     window.onload = async function(){
        try{
         let options ={
-            method:"PUT",
+            method:"GET",
             headers:{
                 "Content-type":"application/json"
-            },
-            body: JSON.stringify({
-                name: person1.name,
-                lastName: person1.lastName,
-                specialty: person1.specialty
-                        
-            })
-        }
-        res = await fetch('./ex10.json/contacts',options),
-        json = await res.json();
+            }
+        };
+        let res = await fetch(`/ex10.json?name=${person1.name}&lastName=${person1.lastName}`);
+        let json = await res.json();
 
         if(!res.ok) {
             throw{status: res.status,statusText:res.statusText}
