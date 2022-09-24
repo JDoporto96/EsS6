@@ -3,7 +3,7 @@ function patternMatch(str, pat){
     while(true){
 
         if(str.length==0 || pat.length==0){
-            return 'No match'
+            return null
         }
         
         if(str[m]===pat[n] || str[m]==='*' || pat[n]==='*'){
@@ -26,7 +26,7 @@ function patternMatch(str, pat){
         }
 
         if(m==str.length || n==pat.length){
-            return undefined
+            return null
         }
        
     }
@@ -42,5 +42,8 @@ str= 'aca*e', pat= 'act'
 console.log(patternMatch(str,pat))
 
 str= 'aaallo', pat='*al*'
+console.log(patternMatch(str,pat))
+
+str= '', pat='*al*'
 console.log(patternMatch(str,pat))
 

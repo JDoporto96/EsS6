@@ -38,12 +38,6 @@
 
     window.onload = async function(){
        try{
-        let options ={
-            method:"GET",
-            headers:{
-                "Content-type":"application/json"
-            }
-        };
         let res = await fetch(`/ex10.json?name=${person1.name}&lastName=${person1.lastName}`);
         let json = await res.json();
 
@@ -52,7 +46,7 @@
         }
        }catch(err){
         let message = err.statusText || "Error encountered";
-        console.log(err, message)
+        console.error(err, message)
        }
     }
     
